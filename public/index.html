@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniCRM · Leads</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="logo">
+        <div class="logo-mark">M</div>
+        <div class="logo-info">
+          <span class="logo-name">MiniCRM</span>
+          <span class="logo-plan">Free plan</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Workspace</div>
+      <a class="nav-item active" href="#">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+          <path d="M3 17a7 7 0 0 1 14 0"/>
+        </svg>
+        Leads
+        <span class="nav-badge" id="nav-badge">0</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-avatar">Yo</div>
+      <span class="sidebar-user">Mi cuenta</span>
+    </div>
+  </aside>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────── -->
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1 class="page-title">Pipeline de Leads</h1>
+          <p class="page-subtitle">Captura y gestiona tus oportunidades de venta</p>
+        </div>
+        <button class="btn btn-primary" id="btn-new-lead">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="6.5" y1="1" x2="6.5" y2="12"/><line x1="1" y1="6.5" x2="12" y2="6.5"/>
+          </svg>
+          Nuevo Lead
+        </button>
+      </header>
+
+      <!-- Stats -->
+      <section class="stats" id="stats"></section>
+
+      <!-- Table card -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-title">Todos los leads</span>
+            <span class="card-count" id="card-count">—</span>
+          </div>
+          <div class="filters" id="filters">
+            <button class="filter-btn active" data-estado="">Todos</button>
+            <button class="filter-btn" data-estado="nuevo">Nuevo</button>
+            <button class="filter-btn" data-estado="contactado">Contactado</button>
+            <button class="filter-btn" data-estado="calificado">Calificado</button>
+            <button class="filter-btn" data-estado="perdido">Perdido</button>
+            <button class="filter-btn" data-estado="convertido">Convertido</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table" id="leads-table">
+            <thead>
+              <tr>
+                <th>Lead</th>
+                <th>Fuente</th>
+                <th>Estado</th>
+                <th>Creado</th>
+                <th style="text-align:right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="leads-body">
+              <tr id="empty-row">
+                <td colspan="5" class="empty-state">
+                  <div class="empty-icon">◈</div>
+                  <p class="empty-title">Sin leads aún</p>
+                  <p class="empty-desc">Agrega tu primer lead para empezar a gestionar tu pipeline</p>
+                  <button class="btn btn-primary" onclick="document.getElementById('btn-new-lead').click()">
+                    + Agregar primer lead
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── Modal ──────────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">Nuevo Lead</h2>
+      <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    </div>
+
+    <form id="lead-form" novalidate>
+      <input type="hidden" id="lead-id" />
+
+      <div class="form-section">Información de contacto</div>
+
+      <div class="form-group">
+        <label class="label" for="input-nombre">Nombre <span class="required">*</span></label>
+        <input class="input" type="text" id="input-nombre" placeholder="Ej. María García" autocomplete="off" />
+        <span class="field-error" id="err-nombre"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="input-email">Email <span class="required">*</span></label>
+        <input class="input" type="email" id="input-email" placeholder="Ej. maria@empresa.com" autocomplete="off" />
+        <span class="field-error" id="err-email"></span>
+      </div>
+
+      <div class="form-section" style="margin-top:8px">Clasificación</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="label" for="input-fuente">Fuente</label>
+          <select class="input" id="input-fuente">
+            <option value="Directo">Directo</option>
+            <option value="Web">Web</option>
+            <option value="Referido">Referido</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Email">Email</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="label" for="input-estado">Estado</label>
+          <select class="input" id="input-estado">
+            <option value="nuevo">Nuevo</option>
+            <option value="contactado">Contactado</option>
+            <option value="calificado">Calificado</option>
+            <option value="perdido">Perdido</option>
+            <option value="convertido">Convertido</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="btn-cancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit">Guardar Lead</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── Toast ─────────────────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniCRM Client</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="container">
+
+    <header class="header">
+      <div class="header-brand">
+        <span class="brand-dot"></span>
+        <h1>MiniCRM Client</h1>
+      </div>
+      <span class="api-badge">API · http://localhost:3000</span>
+    </header>
+
+    <div class="toolbar">
+      <button class="btn btn-secondary" id="btn-load">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 1 4 1"/><polyline points="13 10 13 13 10 13"/>
+          <path d="M1 1 C3 3 11 3 13 7"/><path d="M13 13 C11 11 3 11 1 7"/>
+        </svg>
+        Cargar leads
+      </button>
+      <button class="btn btn-primary" id="btn-create">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="6.5" y1="1" x2="6.5" y2="12"/><line x1="1" y1="6.5" x2="12" y2="6.5"/>
+        </svg>
+        Crear lead de prueba
+      </button>
+    </div>
+
+    <div id="alert" class="alert hidden"></div>
+
+    <section class="card">
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Fuente</th>
+              <th>Estado</th>
+              <th>Creado</th>
+            </tr>
+          </thead>
+          <tbody id="leads-body">
+            <tr>
+              <td colspan="6" class="empty">Haz clic en "Cargar leads" para comenzar</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

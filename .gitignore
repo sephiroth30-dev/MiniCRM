@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment variables (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# SQLite database files (runtime data, not source)
+db/*.sqlite
+db/*.sqlite-shm
+db/*.sqlite-wal
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
