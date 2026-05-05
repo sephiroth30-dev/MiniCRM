@@ -4,8 +4,12 @@ let currentFilter = localStorage.getItem('crm_filter') ?? '';
 let editingId = null;
 let viewMode = localStorage.getItem('crm_view') ?? 'table';
 let sidebarCollapsed = localStorage.getItem('crm_sidebar_collapsed') === 'true';
+let sidebarWidth = Number(localStorage.getItem('crm_sidebar_width')) || 240;
 let draggedLeadId = null;
 let draggedLeadEstado = null;
+
+const SIDEBAR_MIN_WIDTH = 180;
+const SIDEBAR_MAX_WIDTH = 420;
 
 const KANBAN_COLS = [
   { estado: 'nuevo',      label: 'Nuevos',      color: '#3b82f6' },
@@ -63,10 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateViewMode();
   updateSidebarMode();
+  updateSidebarWidth();
   fetchLeads();
 
   document.getElementById('btn-new-lead').addEventListener('click', openNewModal);
   document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+  document.getElementById('sidebar-resizer').addEventListener('pointerdown', startSidebarResize);
   document.getElementById('btn-cancel').addEventListener('click', closeModal);
   document.getElementById('modal-close').addEventListener('click', closeModal);
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
@@ -111,6 +117,35 @@ function updateSidebarMode() {
   const label = sidebarCollapsed ? 'Ampliar menú' : 'Contraer menú';
   btn.setAttribute('aria-label', label);
   btn.title = label;
+}
+
+function startSidebarResize(e) {
+  e.preventDefault();
+  if (sidebarCollapsed) {
+    sidebarCollapsed = false;
+    localStorage.setItem('crm_sidebar_collapsed', 'false');
+    updateSidebarMode();
+  }
+
+  document.body.classList.add('sidebar-resizing');
+  window.addEventListener('pointermove', resizeSidebar);
+  window.addEventListener('pointerup', stopSidebarResize, { once: true });
+}
+
+function resizeSidebar(e) {
+  sidebarWidth = Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, e.clientX));
+  updateSidebarWidth();
+}
+
+function stopSidebarResize() {
+  localStorage.setItem('crm_sidebar_width', String(sidebarWidth));
+  document.body.classList.remove('sidebar-resizing');
+  window.removeEventListener('pointermove', resizeSidebar);
+}
+
+function updateSidebarWidth() {
+  sidebarWidth = Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, sidebarWidth));
+  document.documentElement.style.setProperty('--sidebar-width', `${sidebarWidth}px`);
 }
 
 function updateViewMode() {

@@ -3,6 +3,8 @@
 
 /* ── Tokens ─────────────────────────────────────────────────────────────── */
 :root {
+  --sidebar-width: 240px;
+
   --bg:           #f1f5f9;
   --surface:      #ffffff;
   --surface-2:    #f8fafc;
@@ -68,7 +70,7 @@ body {
 
 /* ── Sidebar ────────────────────────────────────────────────────────────── */
 .sidebar {
-  width: 240px;
+  width: var(--sidebar-width);
   flex-shrink: 0;
   background: linear-gradient(180deg, #2e1065 0%, #4c1d95 58%, #581c87 100%);
   border-right: 1px solid var(--sb-border);
@@ -214,6 +216,42 @@ body {
 }
 
 .sidebar-user { font-size: 12.5px; color: #c4b5fd; font-weight: 500; }
+
+.sidebar-resizer {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+  z-index: 5;
+}
+
+.sidebar-resizer::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 3px;
+  width: 2px;
+  border-radius: var(--r-full);
+  background: transparent;
+  transition: background .15s;
+}
+
+.sidebar-resizer:hover::after,
+body.sidebar-resizing .sidebar-resizer::after {
+  background: rgba(245,208,254,.45);
+}
+
+body.sidebar-resizing {
+  cursor: ew-resize;
+  user-select: none;
+}
+
+body.sidebar-resizing .sidebar {
+  transition: none;
+}
 
 /* ── Main ───────────────────────────────────────────────────────────────── */
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
@@ -1105,6 +1143,7 @@ body.sidebar-collapsed .sidebar-toggle svg {
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .sidebar          { display: none; }
+  .sidebar-resizer  { display: none; }
   .main-inner       { padding: 20px 16px; }
   .form-row         { grid-template-columns: 1fr; }
   .stats            { grid-template-columns: repeat(2, 1fr); }

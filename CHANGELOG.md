@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.5 - 2026-05-05
+
+- Added mouse resizing for the left sidebar with persisted custom width.
+- Kept the existing collapse/expand behavior while allowing adjustable panel sizes.
+- Updated visible version labels to `1.1.5`.
+
 ## v1.1.4 - 2026-05-05
 
 - Added a collapsible left sidebar for a wider workspace view.
