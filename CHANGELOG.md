@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.3 - 2026-05-05
+
+- Added drag-and-drop support for moving Kanban cards between status columns.
+- Moving a card now updates the lead status through the API and refreshes dashboard metrics.
+- Updated visible version labels to `1.1.3`.
+
 ## v1.1.2 - 2026-05-05
 
 - Improved wide-screen responsiveness for the Kanban board.

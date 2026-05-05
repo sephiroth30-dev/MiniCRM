@@ -3,6 +3,8 @@ const API = '/api/leads';
 let currentFilter = localStorage.getItem('crm_filter') ?? '';
 let editingId = null;
 let viewMode = localStorage.getItem('crm_view') ?? 'table';
+let draggedLeadId = null;
+let draggedLeadEstado = null;
 
 const KANBAN_COLS = [
   { estado: 'nuevo',      label: 'Nuevos',      color: '#3b82f6' },
@@ -85,6 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateViewMode();
     fetchLeads();
   });
+
+  document.getElementById('kanban-view').addEventListener('dragstart', handleKanbanDragStart);
+  document.getElementById('kanban-view').addEventListener('dragover', handleKanbanDragOver);
+  document.getElementById('kanban-view').addEventListener('dragleave', handleKanbanDragLeave);
+  document.getElementById('kanban-view').addEventListener('drop', handleKanbanDrop);
+  document.getElementById('kanban-view').addEventListener('dragend', clearKanbanDragState);
 });
 
 function updateViewMode() {
@@ -297,7 +305,7 @@ function renderKanban(leads) {
           const initials  = getInitials(lead.nombre);
           const safeName  = esc(lead.nombre).replace(/'/g, '&#39;');
           return `
-            <div class="kanban-card">
+            <div class="kanban-card" draggable="true" data-lead-id="${lead.id}" data-estado="${lead.estado}">
               <div class="kanban-card-top">
                 <div class="avatar avatar-sm" style="--avatar-a:${ga};--avatar-b:${gb}">${initials}</div>
                 <div class="kanban-card-info">
@@ -318,7 +326,7 @@ function renderKanban(leads) {
         }).join('');
 
     return `
-      <div class="kanban-col kanban-col-${estado}">
+      <div class="kanban-col kanban-col-${estado}" data-estado="${estado}">
         <div class="kanban-col-header">
           <div class="kanban-col-title">
             <span class="kanban-col-dot" style="background:${color}"></span>
@@ -330,6 +338,69 @@ function renderKanban(leads) {
       </div>
     `;
   }).join('');
+}
+
+function handleKanbanDragStart(e) {
+  const card = e.target.closest('.kanban-card');
+  if (!card) return;
+
+  draggedLeadId = card.dataset.leadId;
+  draggedLeadEstado = card.dataset.estado;
+  card.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', draggedLeadId);
+}
+
+function handleKanbanDragOver(e) {
+  const col = e.target.closest('.kanban-col');
+  if (!col || !draggedLeadId) return;
+
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.kanban-col.drop-target').forEach(el => {
+    if (el !== col) el.classList.remove('drop-target');
+  });
+  col.classList.add('drop-target');
+}
+
+function handleKanbanDragLeave(e) {
+  const col = e.target.closest('.kanban-col');
+  if (!col || col.contains(e.relatedTarget)) return;
+  col.classList.remove('drop-target');
+}
+
+async function handleKanbanDrop(e) {
+  const col = e.target.closest('.kanban-col');
+  if (!col || !draggedLeadId) return;
+
+  e.preventDefault();
+  const nextEstado = col.dataset.estado;
+  const leadId = draggedLeadId;
+  const previousEstado = draggedLeadEstado;
+  clearKanbanDragState();
+
+  if (!nextEstado || nextEstado === previousEstado) return;
+
+  const result = await apiFetch(`${API}/${leadId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ estado: nextEstado }),
+  });
+
+  if (result) {
+    toast(`Lead movido a ${statusLabel(nextEstado)}`, 'success');
+    fetchLeads();
+  }
+}
+
+function clearKanbanDragState() {
+  document.querySelectorAll('.kanban-card.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.kanban-col.drop-target').forEach(el => el.classList.remove('drop-target'));
+  draggedLeadId = null;
+  draggedLeadEstado = null;
+}
+
+function statusLabel(estado) {
+  return KANBAN_COLS.find(col => col.estado === estado)?.label ?? estado;
 }
 
 // ── Modal helpers ─────────────────────────────────────────────────────────────

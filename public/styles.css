@@ -872,6 +872,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  border-radius: var(--r-md);
+  transition: background .15s, box-shadow .15s;
+}
+
+.kanban-col.drop-target {
+  background: rgba(236,72,153,.08);
+  box-shadow: inset 0 0 0 2px rgba(236,72,153,.22);
 }
 
 .kanban-col-header {
@@ -930,11 +937,19 @@ body {
   padding: 13px 14px;
   box-shadow: var(--sh-xs);
   transition: box-shadow .15s, transform .15s;
+  cursor: grab;
+  user-select: none;
 }
 
 .kanban-card:hover {
   box-shadow: var(--sh-sm);
   transform: translateY(-1px);
+}
+
+.kanban-card:active { cursor: grabbing; }
+.kanban-card.dragging {
+  opacity: .5;
+  transform: rotate(1deg) scale(.98);
 }
 
 .kanban-card:hover .kanban-actions { opacity: 1; }
