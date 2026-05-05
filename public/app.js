@@ -12,6 +12,8 @@ const KANBAN_COLS = [
   { estado: 'perdido',    label: 'Perdidos',     color: '#f43f5e' },
 ];
 
+const STATUS_META = KANBAN_COLS.map(({ estado, label, color }) => ({ estado, label, color }));
+
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const overlay     = document.getElementById('modal-overlay');
 const modalTitle  = document.getElementById('modal-title');
@@ -117,6 +119,7 @@ async function fetchStats() {
   if (navBadge) navBadge.textContent = c.total;
 
   statsEl.innerHTML = `
+    ${dashboardCharts(c)}
     ${statCard('Total Leads',  c.total,      '#a21caf')}
     ${statCard('Nuevos',       c.nuevo,      '#ec4899')}
     ${statCard('Contactados',  c.contactado, '#d946ef')}
@@ -216,6 +219,71 @@ function statCard(label, value, color) {
       </div>
     </div>
   `;
+}
+
+function dashboardCharts(counts) {
+  const active = counts.total - counts.perdido;
+  const activePercent = counts.total ? Math.round((active / counts.total) * 100) : 0;
+  const totalRing = counts.total ? 'conic-gradient(#a21caf 0 360deg)' : 'conic-gradient(#e2e8f0 0 360deg)';
+  const statusRing = statusSegments(counts);
+  const legend = STATUS_META.map(({ estado, label, color }) => `
+    <div class="chart-legend-item">
+      <span class="chart-legend-dot" style="background:${color}"></span>
+      <span>${label}</span>
+      <strong>${counts[estado]}</strong>
+    </div>
+  `).join('');
+
+  return `
+    <div class="dashboard-charts">
+      <div class="chart-card chart-card-total">
+        <div class="chart-copy">
+          <span class="chart-kicker">Vista rápida</span>
+          <h2 class="chart-title">Leads en pipeline</h2>
+          <p class="chart-note">${active} activos · ${counts.perdido} perdidos</p>
+        </div>
+        <div class="donut" style="--donut:${totalRing}">
+          <div class="donut-center">
+            <strong>${counts.total}</strong>
+            <span>Total</span>
+          </div>
+        </div>
+        <div class="chart-metric">
+          <strong>${activePercent}%</strong>
+          <span>activos</span>
+        </div>
+      </div>
+      <div class="chart-card chart-card-status">
+        <div class="donut donut-status" style="--donut:${statusRing}">
+          <div class="donut-center">
+            <strong>${counts.total}</strong>
+            <span>Estados</span>
+          </div>
+        </div>
+        <div class="chart-copy chart-copy-status">
+          <span class="chart-kicker">Estado de leads</span>
+          <h2 class="chart-title">Distribución actual</h2>
+          <div class="chart-legend">${legend}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function statusSegments(counts) {
+  if (!counts.total) return 'conic-gradient(#e2e8f0 0 360deg)';
+
+  let cursor = 0;
+  const segments = STATUS_META
+    .filter(({ estado }) => counts[estado] > 0)
+    .map(({ estado, color }) => {
+      const start = cursor;
+      const end = cursor + (counts[estado] / counts.total) * 360;
+      cursor = end;
+      return `${color} ${start.toFixed(2)}deg ${end.toFixed(2)}deg`;
+    });
+
+  return `conic-gradient(${segments.join(', ')})`;
 }
 
 function renderKanban(leads) {

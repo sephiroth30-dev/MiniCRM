@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.1 - 2026-05-05
+
+- Added top circular dashboard charts for total leads and lead status distribution.
+- Aligned visible version labels across the CRM and external client.
+
 ## v1.1.0 - 2026-05-04
 
 - Added Kanban board view: leads are displayed as cards grouped into 5 status columns (Nuevo, Contactado, Calificado, Convertido, Perdido), each with a distinct color theme.
