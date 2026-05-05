@@ -1,6 +1,6 @@
 {
   "name": "minicrm-leads",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "MiniCRM Leads - captura y gestión de leads con SQLite",
   "main": "server.js",
   "scripts": {

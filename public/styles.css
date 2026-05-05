@@ -188,12 +188,13 @@ body {
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .main-inner {
-  padding: 36px 40px;
+  padding: 36px clamp(24px, 3vw, 48px);
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 1160px;
+  max-width: 1560px;
   width: 100%;
+  margin: 0 auto;
 }
 
 /* ── Page header ────────────────────────────────────────────────────────── */
@@ -856,18 +857,18 @@ body {
 
 /* ── Kanban board ───────────────────────────────────────────────────────── */
 .kanban {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(190px, 1fr));
   gap: 14px;
   padding: 20px;
-  overflow-x: auto;
+  overflow-x: visible;
   min-height: 320px;
   align-items: flex-start;
   -webkit-overflow-scrolling: touch;
 }
 
 .kanban-col {
-  flex-shrink: 0;
-  width: 232px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1018,6 +1019,29 @@ body {
   .chart-legend { grid-template-columns: 1fr; text-align: left; }
   .row-actions      { opacity: 1; }
   .kanban-actions   { opacity: 1; }
+  .kanban           { display: flex; overflow-x: auto; }
+  .kanban-col       { flex: 0 0 232px; }
   .view-btn         { padding: 5px 8px; font-size: 11px; }
   .card-header-right{ gap: 6px; }
+}
+
+@media (min-width: 769px) and (max-width: 1180px) {
+  .kanban {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .kanban-col {
+    flex: 0 0 232px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .stats {
+    grid-template-columns: repeat(6, minmax(150px, 1fr));
+  }
+
+  .dashboard-charts {
+    grid-template-columns: minmax(360px, .9fr) minmax(520px, 1.1fr);
+  }
 }

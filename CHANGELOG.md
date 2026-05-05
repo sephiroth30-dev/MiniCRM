@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.2 - 2026-05-05
+
+- Improved wide-screen responsiveness for the Kanban board.
+- Expanded the main workspace and made Kanban columns fluid on desktop.
+- Updated visible version labels to `1.1.2`.
+
 ## v1.1.1 - 2026-05-05
 
 - Added top circular dashboard charts for total leads and lead status distribution.
