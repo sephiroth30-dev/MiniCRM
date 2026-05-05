@@ -21,12 +21,12 @@ const btnSubmit   = document.getElementById('btn-submit');
 
 // ── Avatar colors ─────────────────────────────────────────────────────────────
 const AVATAR_GRADIENTS = [
-  ['#6366f1', '#8b5cf6'],
-  ['#0ea5e9', '#6366f1'],
-  ['#10b981', '#059669'],
-  ['#f59e0b', '#d97706'],
-  ['#ec4899', '#8b5cf6'],
-  ['#06b6d4', '#0ea5e9'],
+  ['#a21caf', '#ec4899'],
+  ['#86198f', '#f472b6'],
+  ['#be185d', '#d946ef'],
+  ['#7e22ce', '#db2777'],
+  ['#c026d3', '#f43f5e'],
+  ['#9333ea', '#ec4899'],
 ];
 
 function getAvatarGradient(name) {
@@ -89,11 +89,11 @@ async function fetchStats() {
   if (navBadge) navBadge.textContent = c.total;
 
   statsEl.innerHTML = `
-    ${statCard('Total Leads',  c.total,      '#6366f1')}
-    ${statCard('Nuevos',       c.nuevo,      '#3b82f6')}
-    ${statCard('Contactados',  c.contactado, '#f59e0b')}
-    ${statCard('Calificados',  c.calificado, '#22c55e')}
-    ${statCard('Convertidos',  c.convertido, '#8b5cf6')}
+    ${statCard('Total Leads',  c.total,      '#a21caf')}
+    ${statCard('Nuevos',       c.nuevo,      '#ec4899')}
+    ${statCard('Contactados',  c.contactado, '#d946ef')}
+    ${statCard('Calificados',  c.calificado, '#be185d')}
+    ${statCard('Convertidos',  c.convertido, '#7e22ce')}
     ${statCard('Perdidos',     c.perdido,    '#f43f5e')}
   `;
 }

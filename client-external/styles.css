@@ -7,8 +7,9 @@
   --text:      #0f172a;
   --muted:     #64748b;
   --light:     #94a3b8;
-  --primary:   #6366f1;
-  --primary-h: #4f46e5;
+  --primary:   #a21caf;
+  --primary-h: #86198f;
+  --accent:    #ec4899;
   --success:   #065f46;
   --error:     #7f1d1d;
 
@@ -16,7 +17,7 @@
   --b-contactado-bg: #fefce8; --b-contactado-t: #92400e; --b-contactado-dot: #f59e0b;
   --b-calificado-bg: #f0fdf4; --b-calificado-t: #166534; --b-calificado-dot: #22c55e;
   --b-perdido-bg:    #fff1f2; --b-perdido-t:    #9f1239; --b-perdido-dot:    #f43f5e;
-  --b-convertido-bg: #f5f3ff; --b-convertido-t: #5b21b6; --b-convertido-dot: #8b5cf6;
+  --b-convertido-bg: #fdf4ff; --b-convertido-t: #86198f; --b-convertido-dot: #d946ef;
 }
 
 body {
@@ -56,7 +57,7 @@ body {
   height: 10px;
   border-radius: 50%;
   background: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99,102,241,.2);
+  box-shadow: 0 0 0 3px rgba(236,72,153,.22);
 }
 
 h1 {
@@ -67,10 +68,10 @@ h1 {
 
 .api-badge {
   font-size: 11.5px;
-  font-weight: 500;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
+  font-weight: 700;
+  color: #9d174d;
+  background: linear-gradient(135deg, #fdf4ff, #fce7f3);
+  border: 1px solid rgba(236,72,153,.3);
   padding: 4px 10px;
   border-radius: 9999px;
 }
@@ -99,13 +100,13 @@ h1 {
 .btn:active { transform: scale(.98); }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  background: linear-gradient(135deg, #a21caf, #ec4899);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(99,102,241,.3);
+  box-shadow: 0 2px 8px rgba(236,72,153,.32);
 }
 .btn-primary:hover {
-  background: linear-gradient(135deg, #4f46e5, #6d28d9);
-  box-shadow: 0 4px 14px rgba(99,102,241,.4);
+  background: linear-gradient(135deg, #86198f, #db2777);
+  box-shadow: 0 4px 14px rgba(236,72,153,.4);
 }
 
 .btn-secondary {

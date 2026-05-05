@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2 - 2026-05-05
+
+- Updated the CRM palette to use stronger purple and pink accents.
+- Moved the visible version label under the main page title.
+- Updated local and external version labels to `1.0.2`.
+
 ## v1.0.1 - 2026-05-04
 
 - Added visible version labels to the internal CRM and external client.
