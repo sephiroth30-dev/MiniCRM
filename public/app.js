@@ -3,6 +3,7 @@ const API = '/api/leads';
 let currentFilter = localStorage.getItem('crm_filter') ?? '';
 let editingId = null;
 let viewMode = localStorage.getItem('crm_view') ?? 'table';
+let sidebarCollapsed = localStorage.getItem('crm_sidebar_collapsed') === 'true';
 let draggedLeadId = null;
 let draggedLeadEstado = null;
 
@@ -61,9 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   updateViewMode();
+  updateSidebarMode();
   fetchLeads();
 
   document.getElementById('btn-new-lead').addEventListener('click', openNewModal);
+  document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
   document.getElementById('btn-cancel').addEventListener('click', closeModal);
   document.getElementById('modal-close').addEventListener('click', closeModal);
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
@@ -94,6 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('kanban-view').addEventListener('drop', handleKanbanDrop);
   document.getElementById('kanban-view').addEventListener('dragend', clearKanbanDragState);
 });
+
+function toggleSidebar() {
+  sidebarCollapsed = !sidebarCollapsed;
+  localStorage.setItem('crm_sidebar_collapsed', String(sidebarCollapsed));
+  updateSidebarMode();
+}
+
+function updateSidebarMode() {
+  document.body.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+  const btn = document.getElementById('sidebar-toggle');
+  if (!btn) return;
+  const label = sidebarCollapsed ? 'Ampliar menú' : 'Contraer menú';
+  btn.setAttribute('aria-label', label);
+  btn.title = label;
+}
 
 function updateViewMode() {
   document.querySelectorAll('.view-btn').forEach(b =>

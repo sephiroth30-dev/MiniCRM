@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.4 - 2026-05-05
+
+- Added a collapsible left sidebar for a wider workspace view.
+- Persisted the sidebar expanded/collapsed preference in the browser.
+- Added API test scaffolding changes already present locally to this backup version.
+- Updated visible version labels to `1.1.4`.
+
 ## v1.1.3 - 2026-05-05
 
 - Added drag-and-drop support for moving Kanban cards between status columns.

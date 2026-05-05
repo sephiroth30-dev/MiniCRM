@@ -78,11 +78,16 @@ body {
   top: 0;
   height: 100vh;
   overflow-y: auto;
+  transition: width .2s ease;
 }
 
 .sidebar-top {
   padding: 22px 16px 18px;
   border-bottom: 1px solid var(--sb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .logo {
@@ -111,6 +116,32 @@ body {
 .logo-info { display: flex; flex-direction: column; line-height: 1.2; }
 .logo-name { font-size: 15px; font-weight: 700; color: var(--sb-logo); letter-spacing: -.2px; }
 .logo-plan { font-size: 11px; color: var(--sb-text); margin-top: 1px; }
+
+.sidebar-toggle {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(245,208,254,.18);
+  border-radius: var(--r);
+  background: rgba(255,255,255,.06);
+  color: #fce7f3;
+  cursor: pointer;
+  transition: background .15s, transform .15s, border-color .15s;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(245,208,254,.3);
+}
+
+.sidebar-toggle svg {
+  width: 17px;
+  height: 17px;
+  transition: transform .2s ease;
+}
 
 .sidebar-nav {
   padding: 14px 12px;
@@ -195,6 +226,59 @@ body {
   max-width: 1560px;
   width: 100%;
   margin: 0 auto;
+}
+
+body.sidebar-collapsed .sidebar {
+  width: 76px;
+}
+
+body.sidebar-collapsed .sidebar-top {
+  padding: 18px 12px;
+  flex-direction: column;
+}
+
+body.sidebar-collapsed .logo {
+  padding: 0;
+  justify-content: center;
+}
+
+body.sidebar-collapsed .logo-info,
+body.sidebar-collapsed .nav-label,
+body.sidebar-collapsed .nav-text,
+body.sidebar-collapsed .sidebar-user {
+  display: none;
+}
+
+body.sidebar-collapsed .sidebar-nav {
+  padding: 14px 10px;
+}
+
+body.sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding: 10px;
+  gap: 0;
+}
+
+body.sidebar-collapsed .nav-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  padding: 0 5px;
+  line-height: 18px;
+}
+
+body.sidebar-collapsed .nav-item.active {
+  position: relative;
+}
+
+body.sidebar-collapsed .sidebar-footer {
+  justify-content: center;
+  padding: 14px 10px;
+}
+
+body.sidebar-collapsed .sidebar-toggle svg {
+  transform: rotate(180deg);
 }
 
 /* ── Page header ────────────────────────────────────────────────────────── */

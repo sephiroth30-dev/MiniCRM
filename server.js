@@ -150,6 +150,10 @@ app.delete('/api/leads/:id', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`MiniCRM Leads corriendo en http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`MiniCRM Leads corriendo en http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
