@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.0 - 2026-05-04
+
+- Added Kanban board view: leads are displayed as cards grouped into 5 status columns (Nuevo, Contactado, Calificado, Convertido, Perdido), each with a distinct color theme.
+- Added Lista / Kanban view toggle in the leads panel header; preference persists via `localStorage`.
+- Status filters are automatically hidden in Kanban mode (each column acts as its own filter).
+- Edit and Delete actions remain available on hover for each Kanban card.
+
 ## v1.0.3 - 2026-05-05
 
 - Updated the left sidebar block to use a dark violet theme.

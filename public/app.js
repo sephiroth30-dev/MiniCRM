@@ -2,6 +2,15 @@ const API = '/api/leads';
 
 let currentFilter = localStorage.getItem('crm_filter') ?? '';
 let editingId = null;
+let viewMode = localStorage.getItem('crm_view') ?? 'table';
+
+const KANBAN_COLS = [
+  { estado: 'nuevo',      label: 'Nuevos',      color: '#3b82f6' },
+  { estado: 'contactado', label: 'Contactados',  color: '#f59e0b' },
+  { estado: 'calificado', label: 'Calificados',  color: '#22c55e' },
+  { estado: 'convertido', label: 'Convertidos',  color: '#d946ef' },
+  { estado: 'perdido',    label: 'Perdidos',     color: '#f43f5e' },
+];
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const overlay     = document.getElementById('modal-overlay');
@@ -41,13 +50,13 @@ function getInitials(name) {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // Restaurar filtro guardado
   if (currentFilter) {
     document.querySelectorAll('.filter-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.estado === currentFilter);
     });
   }
 
+  updateViewMode();
   fetchLeads();
 
   document.getElementById('btn-new-lead').addEventListener('click', openNewModal);
@@ -65,14 +74,33 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('crm_filter', currentFilter);
     fetchLeads();
   });
+
+  document.getElementById('view-toggle').addEventListener('click', e => {
+    const btn = e.target.closest('.view-btn');
+    if (!btn) return;
+    viewMode = btn.dataset.view;
+    localStorage.setItem('crm_view', viewMode);
+    updateViewMode();
+    fetchLeads();
+  });
 });
+
+function updateViewMode() {
+  document.querySelectorAll('.view-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.view === viewMode)
+  );
+  document.getElementById('table-view').style.display  = viewMode === 'table'  ? '' : 'none';
+  document.getElementById('kanban-view').style.display = viewMode === 'kanban' ? '' : 'none';
+  document.getElementById('filters').style.display     = viewMode === 'table'  ? '' : 'none';
+}
 
 // ── API calls ─────────────────────────────────────────────────────────────────
 async function fetchLeads() {
-  const url = currentFilter ? `${API}?estado=${currentFilter}` : API;
+  const url = (viewMode === 'kanban' || !currentFilter) ? API : `${API}?estado=${currentFilter}`;
   const leads = await apiFetch(url);
   if (leads) {
-    renderTable(leads);
+    if (viewMode === 'table') renderTable(leads);
+    else renderKanban(leads);
     document.getElementById('card-count').textContent = leads.length;
   }
   fetchStats();
@@ -188,6 +216,52 @@ function statCard(label, value, color) {
       </div>
     </div>
   `;
+}
+
+function renderKanban(leads) {
+  const kanbanEl = document.getElementById('kanban-view');
+  kanbanEl.innerHTML = KANBAN_COLS.map(({ estado, label, color }) => {
+    const colLeads = leads.filter(l => l.estado === estado);
+    const cards = colLeads.length === 0
+      ? `<div class="kanban-empty">Sin leads en esta etapa</div>`
+      : colLeads.map(lead => {
+          const [ga, gb] = getAvatarGradient(lead.nombre);
+          const initials  = getInitials(lead.nombre);
+          const safeName  = esc(lead.nombre).replace(/'/g, '&#39;');
+          return `
+            <div class="kanban-card">
+              <div class="kanban-card-top">
+                <div class="avatar avatar-sm" style="--avatar-a:${ga};--avatar-b:${gb}">${initials}</div>
+                <div class="kanban-card-info">
+                  <div class="kanban-name">${esc(lead.nombre)}</div>
+                  <div class="kanban-email">${esc(lead.email)}</div>
+                </div>
+              </div>
+              <span class="source-chip">${esc(lead.fuente)}</span>
+              <div class="kanban-footer">
+                <span class="kanban-date">${formatDate(lead.creadoEn)}</span>
+                <div class="kanban-actions">
+                  <button class="action-btn edit" onclick="openEditModal(${lead.id})">Editar</button>
+                  <button class="action-btn del" onclick="deleteLead(${lead.id}, '${safeName}')">Eliminar</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+    return `
+      <div class="kanban-col kanban-col-${estado}">
+        <div class="kanban-col-header">
+          <div class="kanban-col-title">
+            <span class="kanban-col-dot" style="background:${color}"></span>
+            ${label}
+          </div>
+          <span class="kanban-col-count">${colLeads.length}</span>
+        </div>
+        ${cards}
+      </div>
+    `;
+  }).join('');
 }
 
 // ── Modal helpers ─────────────────────────────────────────────────────────────

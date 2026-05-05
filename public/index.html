@@ -19,7 +19,7 @@
         <div class="logo-mark">M</div>
         <div class="logo-info">
           <span class="logo-name">MiniCRM</span>
-          <span class="logo-plan">Free plan - v1.0.3</span>
+          <span class="logo-plan">Free plan - v1.1.0</span>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
         <div>
           <h1 class="page-title">Pipeline de Leads</h1>
           <p class="page-subtitle">Captura y gestiona tus oportunidades de venta</p>
-          <span class="version-badge">Versión 1.0.3</span>
+          <span class="version-badge">Versión 1.1.0</span>
         </div>
         <button class="btn btn-primary" id="btn-new-lead">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -64,48 +64,68 @@
       <!-- Stats -->
       <section class="stats" id="stats"></section>
 
-      <!-- Table card -->
+      <!-- Leads card -->
       <section class="card">
         <div class="card-header">
           <div class="card-title-group">
             <span class="card-title">Todos los leads</span>
             <span class="card-count" id="card-count">—</span>
           </div>
-          <div class="filters" id="filters">
-            <button class="filter-btn active" data-estado="">Todos</button>
-            <button class="filter-btn" data-estado="nuevo">Nuevo</button>
-            <button class="filter-btn" data-estado="contactado">Contactado</button>
-            <button class="filter-btn" data-estado="calificado">Calificado</button>
-            <button class="filter-btn" data-estado="perdido">Perdido</button>
-            <button class="filter-btn" data-estado="convertido">Convertido</button>
+          <div class="card-header-right">
+            <div class="filters" id="filters">
+              <button class="filter-btn active" data-estado="">Todos</button>
+              <button class="filter-btn" data-estado="nuevo">Nuevo</button>
+              <button class="filter-btn" data-estado="contactado">Contactado</button>
+              <button class="filter-btn" data-estado="calificado">Calificado</button>
+              <button class="filter-btn" data-estado="perdido">Perdido</button>
+              <button class="filter-btn" data-estado="convertido">Convertido</button>
+            </div>
+            <div class="view-toggle" id="view-toggle">
+              <button class="view-btn active" data-view="table" title="Vista de lista">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <line x1="1" y1="2.5" x2="12" y2="2.5"/><line x1="1" y1="6.5" x2="12" y2="6.5"/><line x1="1" y1="10.5" x2="12" y2="10.5"/>
+                </svg>
+                Lista
+              </button>
+              <button class="view-btn" data-view="kanban" title="Vista Kanban">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="1" width="3" height="9" rx="1"/><rect x="5" y="1" width="3" height="11" rx="1"/><rect x="9" y="1" width="3" height="6" rx="1"/>
+                </svg>
+                Kanban
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="table-wrapper">
-          <table class="table" id="leads-table">
-            <thead>
-              <tr>
-                <th>Lead</th>
-                <th>Fuente</th>
-                <th>Estado</th>
-                <th>Creado</th>
-                <th style="text-align:right">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="leads-body">
-              <tr id="empty-row">
-                <td colspan="5" class="empty-state">
-                  <div class="empty-icon">◈</div>
-                  <p class="empty-title">Sin leads aún</p>
-                  <p class="empty-desc">Agrega tu primer lead para empezar a gestionar tu pipeline</p>
-                  <button class="btn btn-primary" onclick="document.getElementById('btn-new-lead').click()">
-                    + Agregar primer lead
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div id="table-view">
+          <div class="table-wrapper">
+            <table class="table" id="leads-table">
+              <thead>
+                <tr>
+                  <th>Lead</th>
+                  <th>Fuente</th>
+                  <th>Estado</th>
+                  <th>Creado</th>
+                  <th style="text-align:right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="leads-body">
+                <tr id="empty-row">
+                  <td colspan="5" class="empty-state">
+                    <div class="empty-icon">◈</div>
+                    <p class="empty-title">Sin leads aún</p>
+                    <p class="empty-desc">Agrega tu primer lead para empezar a gestionar tu pipeline</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('btn-new-lead').click()">
+                      + Agregar primer lead
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
+        <div id="kanban-view" class="kanban" style="display:none"></div>
       </section>
 
     </div>
