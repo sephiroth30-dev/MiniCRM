@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const db = require('./db/database');
+const pkg = require('./package.json');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,13 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/api/version', (req, res) => {
+  res.json({
+    name: pkg.name,
+    version: pkg.version,
+  });
+});
 
 const requireApiKey = (req, res, next) => {
   if (!process.env.API_KEY) return res.status(500).json({ error: 'API_KEY not configured' });
