@@ -24,12 +24,12 @@
   --danger-sub:   #fef2f2;
 
   /* Sidebar */
-  --sb-bg:        #0c111d;
-  --sb-border:    rgba(255,255,255,.07);
-  --sb-text:      #475569;
-  --sb-hover:     rgba(255,255,255,.05);
-  --sb-active:    rgba(236,72,153,.18);
-  --sb-active-t:  #f9a8d4;
+  --sb-bg:        #2e1065;
+  --sb-border:    rgba(245,208,254,.14);
+  --sb-text:      #c4b5fd;
+  --sb-hover:     rgba(245,208,254,.09);
+  --sb-active:    rgba(236,72,153,.26);
+  --sb-active-t:  #fce7f3;
   --sb-logo:      #f8fafc;
 
   /* Shadows */
@@ -70,7 +70,7 @@ body {
 .sidebar {
   width: 240px;
   flex-shrink: 0;
-  background: var(--sb-bg);
+  background: linear-gradient(180deg, #2e1065 0%, #4c1d95 58%, #581c87 100%);
   border-right: 1px solid var(--sb-border);
   display: flex;
   flex-direction: column;
@@ -182,7 +182,7 @@ body {
   flex-shrink: 0;
 }
 
-.sidebar-user { font-size: 12.5px; color: #475569; font-weight: 500; }
+.sidebar-user { font-size: 12.5px; color: #c4b5fd; font-weight: 500; }
 
 /* ── Main ───────────────────────────────────────────────────────────────── */
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
